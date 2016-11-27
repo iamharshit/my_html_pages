@@ -1,0 +1,14 @@
+h1{ 
+ font-family:Shadows Into Light;
+ font-size:45px;
+ color:blue;
+}
+
+#getMessage{ 
+ width: 8em;  
+ height: 2em;
+ font-size:45px;
+ font-family:Indie Flower;
+ color:red;
+ background:yellow;
+}
