@@ -1,0 +1,108 @@
+<html>
+	<head>
+		<title>Pokemon GO</title>
+		<style>
+			#mycanvas{
+				border:3px solid black;
+				background: url("img/background.jpg");
+				background-size: cover;
+			}
+		</style>
+	</head>
+
+	<body>
+		<canvas id="mycanvas" width="400px" height="350px">
+		</canvas>
+
+		<script>
+		var canvas = document.getElementById('mycanvas');
+		var ctx = canvas.getContext('2d');
+		var W = 400, H = 350;
+		var game_over=false;
+
+
+		var enemyImage = new Image();
+		enemyImage.src = "img/enemy.gif";
+
+		var playerImage = new Image();
+		playerImage.src =  "img/player.png";
+
+		var destinationImage = new Image();
+		destinationImage.src = "img/destination.png";
+
+		var enemy = {
+			x:W/2-20,
+			y:H-50,
+			w:30,
+			h:45,
+			speed:3
+		};
+		var player = {
+			x:5,
+			y:H-100,
+			w:50,
+			h:50,
+			speed:2,
+			isMoving:false
+		};
+		var destination = {
+			x:W-100,
+			y:H-140,
+			w:100,
+			h:140
+		};
+
+		window.addEventListener('keydown',this.check1,false);
+		function check1(e) {
+    		player.isMoving=true;
+		}
+		window.addEventListener('keyup',this.check2,false);
+		function check2(e) {
+    		player.isMoving=false;
+		}
+
+		var isColliding = function(a,b){
+			if(Math.abs(a.x-b.x)<=40  && Math.abs(a.y-b.y)<=40) 
+				return true;
+			else
+				return false;
+		}
+           
+		var draw = function(){
+			ctx.clearRect(0, 0, W, H);
+			ctx.fillStyle = "rgb(100,100,250)";
+			ctx.drawImage(enemyImage, enemy.x, enemy.y, enemy.w, enemy.h);
+			ctx.drawImage(playerImage,player.x,player.y,player.w,player.h);
+			ctx.drawImage(destinationImage,destination.x,destination.y,destination.w,destination.h);
+		}
+
+		var update = function(){
+			if(isColliding(enemy,player)){
+				alert("YOU LOSE !!!");
+				game_over=true;
+			}
+			else if(isColliding(player,destination)){
+				alert("YOU WIN !!!");
+				game_over=true;
+			}
+
+			enemy.y = enemy.y+enemy.speed;
+			if(enemy.y >= H-enemy.h || enemy.y<=0)
+				enemy.speed*=-1;
+
+			if(player.isMoving==true)
+				player.x += player.speed;
+		}
+
+		var render = function(){
+			draw();
+			update();
+			if(game_over==false)
+				window.requestAnimationFrame(render);
+		}
+
+		render();			
+
+		</script>
+	</body>
+</html>
